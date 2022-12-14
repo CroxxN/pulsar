@@ -2,7 +2,7 @@
 
 # CURRENTLY NOT FUNCTIONAL
 
-- v.0.1 is yet to be annnounced.
+- `v.0.1` is yet to be annnounced.
 
 ## Progress
 
@@ -12,14 +12,14 @@
 
 - Migrate to `libpulse-binding`
 
-## Lessons learnt along the way; The path to v.0.1
+## Lessons learnt along the way; The path to `v.0.1`
 
-- The crate `pulsectl-rs` is good for basic volume control but doesn't work for more complex criteria.
+- The crate `pulsectl-rs` is good for basic volume control but doesn't work for more complex criterion.
    Used it in very early steps of development, and quickly found out it doesn't have as much feature as one would like.
    For example, AFAIK, there is no way to subscribe to events.
    
-- Our trusty old friend `libpulse-bindings` does a pretty good job tho.
-    I was resitant to use it due to it's scary af funciton parameters, but as I learnt more Rust, I's beginning to make sense.
+- Our trusty old friend `libpulse-binding` does a pretty good job tho.
+    I was resitant to use it due to it's scary af funciton parameters, but as I learnt more Rust, I'm beginning to make sense.
 
 - That's it.
 
