@@ -7,10 +7,12 @@
 ## Progress
 
 - `Project Started (Dec 15 01:29)`
+- `Migrated to libpulse-binding (Dec 17 01:53)`
+- `Everything *just works* (Dec 17 01:53)`
 
 ## ToDo
 
-- Migrate to `libpulse-binding`
+- ~~Migrate to `libpulse-binding`~~ (done)
 
 ## Lessons learnt along the way; The path to `v.0.1`
 
