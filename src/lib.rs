@@ -13,13 +13,13 @@ use pulse::proplist::Proplist;
 // use pulse::stream::Direction;
 // use pulse::volume::ChannelVolumes;
 
-struct Pulse {
+pub struct Pulse {
     mainloop: Mainloop,
     context: Context,
 }
 
 impl Pulse {
-    fn init() -> Result<(), PulseCoreError> {
+    pub fn init() -> Result<Self, PulseCoreError> {
         let mut mainloop = Mainloop::new().expect("Failed to create mainloop");
         let mut context =
             Context::new_with_proplist(&mainloop, "pulsar", &Proplist::new().unwrap()).unwrap();
@@ -37,12 +37,12 @@ impl Pulse {
                 mainloop.iterate(false);
             }
         }
-        Ok(())
+        Ok(Self { mainloop, context })
     }
-    fn run(&mut self) {
+    pub fn run(&mut self) {
         self.mainloop.run().unwrap();
     }
-    fn get_sink_list<F>(&mut self, mask: InterestMaskSet, callback: F)
+    pub fn get_sink_list<F>(&mut self, mask: InterestMaskSet, callback: F)
     where
         F: FnMut(Option<Facility>, Option<Operation>, u32) + 'static,
     {
@@ -65,4 +65,19 @@ impl Pulse {
             });
     }
     fn subscribe_volume_change<F>(&mut self) {}
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    #[test]
+    fn initiate() {
+        let _mn = Pulse::init().expect("Failed");
+        drop(_mn);
+    }
+    #[test]
+    fn run() {
+        let mut mn = Pulse::init().expect("Failed");
+        mn.run();
+    }
 }
