@@ -9,12 +9,15 @@
 - `Project Started (Dec 15 01:29)`
 - `Migrated to libpulse-binding (Dec 17 01:53)`
 - `Everything *just works* (Dec 17 01:53)`
+- `Pulse is ready to be integrated with GUI`
 
 ## ToDo
 
 - ~~Migrate to `libpulse-binding`~~ (done)
 
 - The code is a mess, organize it.
+
+- Use egui for the GUI. Was going to use druid for it but had a change of heart lmao.
 
 ## Lessons learnt along the way; The path to `v.0.1`
 
@@ -24,11 +27,13 @@
    
 - Our trusty old friend `libpulse-binding` does a pretty good job tho.
     I was resitant to use it due to it's scary af funciton parameters, but as I learnt more Rust, It's beginning to make sense.
+    
+- Projects are a nightmare. 0/10 wouldn't recomend
 
 - That's it.
 
 # Notes for Future Self
 
 - A lot of callbacks are going to be used so it may as well be an exercise in Rust callback functions.
-- A lot of entailing madness
+- A lot of entailing madness (no cap `Dec 23`)
 - I'm going to need to learn more about Rust's `unsafe` blocks.
