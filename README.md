@@ -9,7 +9,9 @@
 - `Project Started (Dec 15 01:29)`
 - `Migrated to libpulse-binding (Dec 17 01:53)`
 - `Everything *just works* (Dec 17 01:53)`
-- `Pulse is ready to be integrated with GUI`
+- `Pulse is ready to be integrated with GUI  (Dec 23 17:43)`
+- `A skeleton for GUI has been created (Dec 24 22:44)`
+- `Separate threads for the GUI and Pulse client (may be scrapped)`
 
 ## ToDo
 
@@ -17,7 +19,10 @@
 
 - The code is a mess, organize it.
 
-- Use egui for the GUI. Was going to use druid for it but had a change of heart lmao.
+- ~~Use egui for the GUI. Was going to use druid for it but had a change of heart lmao.~~ (Done)
+
+- On the GUI side, remember what the window size and position the user has set and load from it next time
+
 
 ## Lessons learnt along the way; The path to `v.0.1`
 
@@ -29,6 +34,8 @@
     I was resitant to use it due to it's scary af funciton parameters, but as I learnt more Rust, It's beginning to make sense.
     
 - Projects are a nightmare. 0/10 wouldn't recomend
+
+- Basic GUI
 
 - That's it.
 

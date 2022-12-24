@@ -4,6 +4,7 @@ mod ui;
 use libpulse_binding as pulse;
 use pulse::callbacks::ListResult;
 use std::ops::Deref;
+use std::thread;
 use std::{cell::RefCell, rc::Rc};
 // use pulse::context::introspect::SinkInfo;
 use pulse::context;
@@ -88,6 +89,9 @@ impl Pulse {
     }
 }
 fn main() {
+    thread::spawn(||{
+        ui::ui::ui_run();
+    });
     let ctx = Pulse::initiate();
     ctx.set_subscribe();
     ctx.get_sink_list();
