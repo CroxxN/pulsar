@@ -2,16 +2,16 @@
 mod ui;
 mod pulse;
 pub use pulse::Pulse;
-use std::thread;
+use std::sync::mpsc;
 
 fn main() {
-    thread::spawn(||{
         ui::ui::ui_run();
-    });
+    let (tx, rx) = mpsc::channel::<String>();
     let ctx = Pulse::initiate();
     ctx.set_subscribe();
-    ctx.set_sink_callback(|_x, _y, z|{
-        println!("{z}");
-    });
+    ctx.set_sink_callback(tx);
     ctx.run();
+    // loop {
+    //     println!("{} this", rx.recv().unwrap());
+    // }
 }

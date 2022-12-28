@@ -1,12 +1,8 @@
 use libpulse_binding as pulse;
 use pulse::callbacks::ListResult;
-use pulse::context::introspect::SinkInputInfo;
-use pulse::context::subscribe::{Facility, Operation};
+use pulse::context::subscribe::Operation;
 use std::ops::Deref;
-use std::{
-    cell::RefCell,
-    rc::Rc
-};
+use std::{cell::RefCell, rc::Rc};
 // use pulse::context::introspect::SinkInfo;
 use pulse::context;
 use pulse::mainloop::standard::Mainloop;
@@ -62,17 +58,32 @@ impl Pulse {
             .run()
             .expect("Unable to run the mainloop");
     }
-    fn handle_callback<F>(index: u32, f:F) where F: Fn(ListResult<&SinkInputInfo>){
-        let mut thing = String::new();
-        // self.context.borrow()
-        //     .introspect()
-        //     .get_sink_input_info(index, f);
+    fn handle_thing(
+        ctx: Rc<RefCell<pulse::context::Context>>,
+        index: u32,
+        tx: std::sync::mpsc::Sender<String>,
+    ) {
+        ctx.borrow_mut()
+            .introspect()
+            .get_sink_input_info(index, move |res| match res {
+                ListResult::Item(val) => {
+                    _ = tx
+                        .send(val.proplist.to_string().to_owned().unwrap_or_default());
+                }
+                _ => {}
+            });
     }
-    pub fn set_sink_callback<F>(&self, f:F) where F:Fn(Option<Facility>, Option<Operation>, u32) + 'static{
-        
+    pub fn set_sink_callback(&self, tx: std::sync::mpsc::Sender<String>) {
+        let ctx = Rc::clone(&self.context);
         self.context
             .borrow_mut()
-            .set_subscribe_callback(Some(Box::new(f)));
+            .set_subscribe_callback(Some(Box::new(move |_fac, op, index| match op {
+                Some(Operation::New | Operation::Removed) => {
+                    let txc = tx.clone();
+                    Self::handle_thing(ctx.clone(), index, txc);
+                    // let _ =
+                }
+                _ => {}
+            })));
     }
-
 }

@@ -5,7 +5,6 @@ use eframe::{egui, epaint};
 #[derive(Default)]
 struct PulseData {
     user_volume: f64,
-    sink_list: String
     // volume: Volume 
 }
 
@@ -30,7 +29,7 @@ impl eframe::App for PulseData{
             ui.heading("Pulsar");
             ui.add(egui::Slider::new(&mut self.user_volume, 0_f64..=1_f64).text("Volume"));
             ui.label(format!("The volume is: {}", self.user_volume));
-            ui.label(format!("{}", self.sink_list));
+            // ui.label(format!("{}", self.sink_list));
         });   
     }
 }
