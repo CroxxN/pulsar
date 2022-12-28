@@ -37,6 +37,8 @@
 
 - Basic GUI
 
+- Going insance now
+
 - That's it.
 
 # Notes for Future Self
