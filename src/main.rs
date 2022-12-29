@@ -1,16 +1,27 @@
 #![allow(dead_code)]
-mod ui;
 mod pulse;
+mod ui;
 pub use pulse::Pulse;
 use std::sync::mpsc;
+use std::thread;
 
 fn main() {
-        ui::ui::ui_run();
     let (tx, rx) = mpsc::channel::<String>();
-    let ctx = Pulse::initiate();
-    ctx.set_subscribe();
-    ctx.set_sink_callback(tx);
-    ctx.run();
+
+    thread::spawn(move || {
+        let ctx = Pulse::initiate();
+        ctx.set_subscribe();
+        ctx.set_sink_callback(tx);
+        ctx.run();
+        match rx.try_recv() {
+            Ok(val) => {
+                println!("{val}");
+            }
+            _ => {}
+        }
+    });
+
+    ui::ui::ui_run();
     // loop {
     //     println!("{} this", rx.recv().unwrap());
     // }

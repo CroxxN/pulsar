@@ -19,9 +19,11 @@
 
 - The code is a mess, organize it.
 
-- ~~Use egui for the GUI. Was going to use druid for it but had a change of heart lmao.~~ (Done)
+- ~~Use egui for the GUI. Was going to use druid for it but had a change of heart lmao.~~ (Done)(Scrapped)
 
 - On the GUI side, remember what the window size and position the user has set and load from it next time
+
+- Druid looks a lot ergonomic and functions exactly the way I need. So, friendship ended with egui, Druid is my mate now.
 
 
 ## Lessons learnt along the way; The path to `v.0.1`
@@ -37,7 +39,9 @@
 
 - Basic GUI
 
-- Going insance now
+- Going insane now
+
+- Designing before hand is a skill
 
 - That's it.
 

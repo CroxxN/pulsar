@@ -58,15 +58,17 @@ impl Pulse {
             .run()
             .expect("Unable to run the mainloop");
     }
-    fn handle_thing(
+    fn handle_sink_change_callback(
         ctx: Rc<RefCell<pulse::context::Context>>,
         index: u32,
         tx: std::sync::mpsc::Sender<String>,
     ) {
+        println!("Handeling Pulse Change");
         ctx.borrow_mut()
             .introspect()
             .get_sink_input_info(index, move |res| match res {
                 ListResult::Item(val) => {
+                    println!("{val:?}");
                     _ = tx
                         .send(val.proplist.to_string().to_owned().unwrap_or_default());
                 }
@@ -80,7 +82,7 @@ impl Pulse {
             .set_subscribe_callback(Some(Box::new(move |_fac, op, index| match op {
                 Some(Operation::New | Operation::Removed) => {
                     let txc = tx.clone();
-                    Self::handle_thing(ctx.clone(), index, txc);
+                    Self::handle_sink_change_callback(ctx.clone(), index, txc);
                     // let _ =
                 }
                 _ => {}
