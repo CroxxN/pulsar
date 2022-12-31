@@ -11,7 +11,9 @@ fn main() {
     thread::spawn(move || {
         let ctx = Pulse::initiate();
         ctx.set_subscribe();
-        ctx.set_sink_callback(tx);
+        ctx.set_sink_callback(tx, ||{
+            println!("Called");
+        });
         ctx.run();
         match rx.try_recv() {
             Ok(val) => {

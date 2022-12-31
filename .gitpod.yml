@@ -4,6 +4,6 @@
 
 tasks:
   - init: sudo apt install libpulse-dev 
-    command: cargo watch -x run
+    command: sudo apt install libpulse-dev 
 
 
