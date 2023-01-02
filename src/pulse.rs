@@ -62,7 +62,7 @@ impl Pulse {
         ctx: Rc<RefCell<pulse::context::Context>>,
         index: u32,
         tx: std::sync::mpsc::Sender<String>,
-        f: fn() -> () 
+        f: fn(String) -> () 
     ) {
         println!("Handeling Pulse Change");
         ctx.borrow_mut()
@@ -70,20 +70,21 @@ impl Pulse {
             .get_sink_input_info(index, move |res| match res {
                 ListResult::Item(val) => {
                     println!("{val:?}");
-                    _ = tx
-                        .send(val.proplist.to_string().to_owned().unwrap_or_default());
-                        f();
+                    //_ = tx
+                        //.send(val.proplist.to_string().to_owned().unwrap_or_default());
+                        f(val.proplist.to_string().to_owned().unwrap_or_default());
                 }
                 _ => {}
             });
     }
-    pub fn set_sink_callback(&self, tx: std::sync::mpsc::Sender<String>, f: fn() -> ()) {
+    pub fn set_sink_callback(&self, tx: std::sync::mpsc::Sender<String>, f: fn(String) -> ()) {
         let ctx = Rc::clone(&self.context);
         self.context
             .borrow_mut()
             .set_subscribe_callback(Some(Box::new(move |_fac, op, index| match op {
                 Some(Operation::New | Operation::Removed) => {
                     let txc = tx.clone();
+                    println!("{op:?}");
                     Self::handle_sink_change_callback(ctx.clone(), index, txc, f);
                     // let _ =
                 }

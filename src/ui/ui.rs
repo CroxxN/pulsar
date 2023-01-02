@@ -4,6 +4,7 @@ use eframe::{egui};
 #[derive(Default)]
 struct PulseData {
     user_volume: f64,
+    count: i32
     // volume: Volume 
 }
 
@@ -28,8 +29,9 @@ pub fn ui_run() {
 impl eframe::App for PulseData{
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
        egui::CentralPanel::default().show(ctx, |ui| {
+           self.count+=1;
             ui.heading("Pulsar");
-            ui.add(egui::Slider::new(&mut self.user_volume, 0_f64..=1_f64).text("Volume"));
+            ui.add(egui::Slider::new(&mut self.user_volume, 0_f64..=1_f64).text(format!("Volume count {}", self.count)));
             ui.label(format!("The volume is: {}", self.user_volume));
 
             // _frame.
