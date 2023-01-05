@@ -1,14 +1,14 @@
-use eframe::{egui};
+use eframe::egui::{self, Ui};
 // use libpulse_binding::volume::{VolumeLinear, VolumeDB};
 
-#[derive(Default)]
 struct PulseData {
     user_volume: f64,
-    count: i32
+    rx: std::sync::mpsc::Receiver<String>
     // volume: Volume 
 }
 
-pub fn ui_run() {
+
+pub fn ui_run(rx: std::sync::mpsc::Receiver<String>) {
     let options = eframe::NativeOptions {
         initial_window_size: Some(egui::vec2(250.0, 350.0)),
         // follow_system_theme: true,
@@ -19,8 +19,11 @@ pub fn ui_run() {
     eframe::run_native(
         "Pulsar",
         options,
-        Box::new(|_cc| Box::new(PulseData::default())),
-    );
+        Box::new(|_cc| Box::new(PulseData{
+            user_volume: 0.0,
+            rx
+        }),
+    ));
     // let event_loop = eframe::EventLoopBuilder::new().build();
     // event_loop.(event_handler);
 }
@@ -29,13 +32,22 @@ pub fn ui_run() {
 impl eframe::App for PulseData{
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
        egui::CentralPanel::default().show(ctx, |ui| {
-           self.count+=1;
             ui.heading("Pulsar");
-            ui.add(egui::Slider::new(&mut self.user_volume, 0_f64..=1_f64).text(format!("Volume count {}", self.count)));
+            if ui.add(egui::Slider::new(&mut self.user_volume, 0_f64..=1_f64)).changed() {
+                make(ui);
+            };
             ui.label(format!("The volume is: {}", self.user_volume));
-
-            // _frame.
-            // ui.label(format!("{}", self.sink_list));
+            
+            match self.rx.recv(){
+                Ok(value) => {
+                    ui.add(egui::Label::new(value));
+                },
+                Err(_) => {}
+            }
         });   
     }
+}
+
+fn make(ui: &mut Ui){
+    ui.add(egui::Label::new("This"));
 }

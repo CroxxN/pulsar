@@ -2,28 +2,18 @@
 mod pulse;
 mod ui;
 pub use pulse::Pulse;
-use std::sync::mpsc;
-use std::thread;
+use std::{thread, sync::mpsc::channel};
 
 fn main() {
-    let (tx, rx) = mpsc::channel::<String>();
-
+    let (tx, rx) = channel::<String>();
     thread::spawn(move || {
         let ctx = Pulse::initiate();
         ctx.set_subscribe();
-        ctx.set_sink_callback(tx, |x|{
-            println!("{x}");
-        });
+        ctx.set_sink_callback(tx);
         ctx.run();
-        match rx.try_recv() {
-            Ok(val) => {
-                println!("{val}");
-            }
-            _ => {}
-        }
     });
 
-    ui::ui::ui_run();
+    ui::ui::ui_run(rx);
     // loop {
     //     println!("{} this", rx.recv().unwrap());
     // }

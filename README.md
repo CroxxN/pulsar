@@ -50,3 +50,4 @@
 - A lot of callbacks are going to be used so it may as well be an exercise in Rust callback functions.
 - A lot of entailing madness (no cap `Dec 23`)
 - I'm going to need to learn more about Rust's `unsafe` blocks.
+- Insanity
