@@ -1,4 +1,4 @@
-use eframe::egui::{self, Ui};
+use eframe::egui;
 // use libpulse_binding::volume::{VolumeLinear, VolumeDB};
 
 struct PulseData {
@@ -33,21 +33,17 @@ impl eframe::App for PulseData{
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
        egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("Pulsar");
-            if ui.add(egui::Slider::new(&mut self.user_volume, 0_f64..=1_f64)).changed() {
-                make(ui);
-            };
+            ui.add(egui::Slider::new(&mut self.user_volume, 0_f64..=1_f64));
             ui.label(format!("The volume is: {}", self.user_volume));
             
-            match self.rx.recv(){
+            match self.rx.try_recv(){
                 Ok(value) => {
-                    ui.add(egui::Label::new(value));
+                    println!("{value}");
+                    ui.label("Work");
+                    ctx.request_repaint();
                 },
                 Err(_) => {}
             }
         });   
     }
-}
-
-fn make(ui: &mut Ui){
-    ui.add(egui::Label::new("This"));
 }
