@@ -3,7 +3,8 @@ use eframe::egui;
 
 struct PulseData {
     user_volume: f64,
-    rx: std::sync::mpsc::Receiver<String>
+    rx: std::sync::mpsc::Receiver<String>,
+    booler: Vec<bool>
     // volume: Volume 
 }
 
@@ -21,7 +22,8 @@ pub fn ui_run(rx: std::sync::mpsc::Receiver<String>) {
         options,
         Box::new(|_cc| Box::new(PulseData{
             user_volume: 0.0,
-            rx
+            rx,
+            booler: vec![true, true] 
         }),
     ));
     // let event_loop = eframe::EventLoopBuilder::new().build();
@@ -35,11 +37,13 @@ impl eframe::App for PulseData{
             ui.heading("Pulsar");
             ui.add(egui::Slider::new(&mut self.user_volume, 0_f64..=1_f64));
             ui.label(format!("The volume is: {}", self.user_volume));
-            
+            self.booler.iter().for_each(|x| if *x {
+            });
             match self.rx.try_recv(){
                 Ok(value) => {
-                    println!("{value}");
-                    ui.label("Work");
+                    egui::CentralPanel::default().show_inside(ui, |ui_aux|{
+                        ui_aux.label(value);
+                    });
                     ctx.request_repaint();
                 },
                 Err(_) => {}
