@@ -13,6 +13,7 @@ pub struct Pulse {
     context: Rc<RefCell<context::Context>>,
 }
 
+// TODO: Clean this cesspool
 impl Pulse {
     pub fn initiate() -> Pulse {
         let mainloop = Rc::new(RefCell::new(
@@ -61,16 +62,17 @@ impl Pulse {
     fn handle_new_rem(
         ctx: Rc<RefCell<pulse::context::Context>>,
         index: u32,
-        tx: std::sync::mpsc::Sender<String>
+        tx: std::sync::mpsc::Sender<String>,
     ) {
         println!("Handeling Pulse Change");
-        ctx.borrow_mut()
+        ctx.borrow()
             .introspect()
             .get_sink_input_info(index, move |res| match res {
                 ListResult::Item(val) => {
                     //_ = tx
-                        //.send(val.proplist.to_string().to_owned().unwrap_or_default());
-                        tx.send(val.proplist.to_string().to_owned().unwrap_or_default()).unwrap();
+                    //.send(val.proplist.to_string().to_owned().unwrap_or_default());
+                    tx.send(val.proplist.to_string().to_owned().unwrap_or_default())
+                        .unwrap();
                 }
                 _ => {}
             });
