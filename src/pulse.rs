@@ -36,7 +36,7 @@ impl Pulse {
             println!("Connected to pulse backend");
         })));
         loop {
-            if context.borrow_mut().get_state() == pulse::context::State::Ready {
+            if context.borrow().get_state() == pulse::context::State::Ready {
                 context.borrow_mut().set_state_callback(None);
                 println!("Ready");
                 break;
@@ -82,7 +82,7 @@ impl Pulse {
         self.context
             .borrow_mut()
             .set_subscribe_callback(Some(Box::new(move |_fac, op, index| match op {
-                Some(Operation::New | Operation::Removed) => {
+                Some(_) => {
                     Self::handle_new_rem(ctx.clone(), index, tx.to_owned());
                     // let _ =
                 }

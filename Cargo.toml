@@ -11,4 +11,3 @@ lto = true
 
 [dependencies]
 libpulse-binding = "2.26.0"
-eframe = "0.20.1"

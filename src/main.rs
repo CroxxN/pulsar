@@ -1,8 +1,7 @@
 #![allow(dead_code)]
 mod pulse;
-mod ui;
 pub use pulse::Pulse;
-use std::{thread, sync::mpsc::channel};
+use std::{sync::mpsc::channel, thread};
 
 fn main() {
     let (tx, rx) = channel::<String>();
@@ -13,7 +12,11 @@ fn main() {
         ctx.run();
     });
 
-    ui::ui::ui_run(rx);
+    while let Ok(ret) = rx.recv() {
+        println!("{ret}");
+    }
+
+    // ui::ui::ui_run(rx);
     // loop {
     //     println!("{} this", rx.recv().unwrap());
     // }
