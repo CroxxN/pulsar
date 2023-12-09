@@ -1,3 +1,4 @@
+
 #![allow(dead_code)]
 mod pulse;
 pub use pulse::Pulse;
